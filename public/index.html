@@ -1,11 +1,85 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- Meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/css/styles.css"/>
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!--Font Awesome Icons-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+    <title>Wishlist</title>
   </head>
   <body>
-    <!--Header-->
-    <!--Content-->
-    <!--Footer-->
+    <div id="app">
+      <!--Header-->
+      <div class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="#">Wishlist</a>
+      </div>
+      <!--Content-->
+      <!-- Show existing lists -->
+      <div v-for="wishlist in wishlists">
+        <div class="wishlist-container">
+          <p>
+            {{wishlist.list.name}}
+            <button class="btn btn-outline-primary" @click="wishlist.show = !wishlist.show"><i class="fas fa-bars"></i></button>
+            <button class="btn btn-outline-primary" @click="deleteList(wishlist)"><i class="fas fa-trash"></i></button>
+          </p>
+          <hr>
+          <div v-if="wishlist.show">
+            <transition-group name="fade-in" tag="ul" v-bind:css="false" v-on:before-enter="beforeEnter" v-on:enter="enter" v-on:leave="leave">
+              <li class="item-container"v-for="(item, index) in wishlist.list.items" v-bind:key="item.name" v-bind:data-index="index">
+                <label>{{item.name}}</label>
+                <button class="btn btn-outline-primary" @click="deleteItem(wishlist,item)"><i class="fas fa-trash"></i></button>
+                </br>
+                <a :href="item.link" target=":blank">Link</a>
+                <hr>
+              </li>
+            </transition-group>
+            <form v-on:submit.prevent>
+              <label>New Item</label></br>
+              <input type="text" v-model="newName">
+              </br>
+              <label>Link</label></br>
+              <input type="text" v-model="newLink">
+              <button class="btn btn-outline-primary" @click="addItem(wishlist)"><i class="fas fa-plus"></i></button>
+            </form>
+            <hr>
+          </div>
+        </div>
+      </div>
+      <!-- Add a new list -->
+      <div class="wishlist-container">
+        <form v-on:submit.prevent>
+          <label>New List</label></br>
+          <input type="text" v-model="newList">
+          <button class="btn btn-outline-primary" @click="addList"><i class="fas fa-plus"></i></button>
+        </form>
+        <hr>
+      </div>
+      <!--Footer-->
+      <div class="navbar navbar-expand-lg navbar-dark bg-dark footer mt-auto fixed-bottom">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link nav-item" href="https://github.com/jfields7/creative4" target=:blank>Github</a>
+          </li>
+        </ul>
+      </div>
+    </div>
     <!--Scripts-->
+    <!--Bootstrap-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <!--Vue-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.7/vue.js" integrity="sha256-g+Q8DFAmG5+eyRPSydX0LY4TfjsL11XSDrIGerbbEdA=" crossorigin="anonymous"></script>
+    <script src="/javascript/script.js"></script>
   </body>
 </html>
